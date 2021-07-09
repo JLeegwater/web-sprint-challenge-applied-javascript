@@ -19,6 +19,7 @@ const Card = (article) => {
   //   </div>
   // </div>
 
+  //create all our elements we will need
   const card = document.createElement("div");
   const headline = document.createElement("div");
   const author = document.createElement("div");
@@ -26,21 +27,25 @@ const Card = (article) => {
   const img = document.createElement("img");
   const authorName = document.createElement("span");
 
+  //append the elements to their parents
   card.appendChild(headline);
   card.appendChild(author);
   author.appendChild(imgContainer);
   imgContainer.appendChild(img);
   author.appendChild(authorName);
 
+  //add the elements class names
   card.classList.add("card");
   headline.classList.add("headline");
   author.classList.add("author");
   imgContainer.classList.add("img-container");
 
+  //add the elements contents
   headline.textContent = article.headline;
   img.src = article.authorPhoto;
   authorName.textContent = article.authorName;
 
+  //add our click event listener to our card
   card.addEventListener("click", () => {
     console.log(headline.textContent);
   });
@@ -58,20 +63,18 @@ const cardAppender = (selector) => {
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
 
+  //do our axios get for our information
   axios
     .get("http://localhost:5000/api/articles")
     .then((res) => {
+      //iterate through our results object of objects
       Object.values(res.data.articles).forEach((values) => {
-        ///
-        //console.log(key);
+        //iterate through each object's array
         values.forEach((obj) => {
-          const article = Card(obj);
-          //console.log(article);
-          document.querySelector(selector).appendChild(article);
+          //for each item in the array send our objects to our Card function and append them fo the DOM element we were passed the name of
+          document.querySelector(selector).appendChild(Card(obj));
         });
       });
-
-      //console.log(res);
     })
     .catch((err) => {
       console.log(err);
